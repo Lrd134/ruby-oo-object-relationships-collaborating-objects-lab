@@ -10,30 +10,17 @@ class Song
         @@all
     end
     def self.new_by_filename(filename) # Michael Jackson - Black or White - pop.mp3
-        filename = filename.chomp(".mp3").split(" ")
-        artist_names = []
-        artist_names << filename[0]
-        until filename.shift == "-"
-            artist_names << filename[0] if filename[0] != "-"
-        end
-        song_name = []
-        song_name << filename[0]
-        until filename.shift == "-"
-            song_name << filename[0] if filename[0] != "-"
-        end
-        genre = []
-        genre << filename[0]
-        self.new(song_name.join(" "))
         
-        @artist = Artist.new(artist_names.join(" "))
-        
-        
+        filename = filename.chomp(".mp3").split(" - ")
+        # binding.pry
+        new_song = self.new(filename[1])
+        new_song.artist_name = filename[0]
+        new_song.genre = filename[2]
+        new_song
     end
     def artist_name=(name)
         if self.artist.nil?
-            self.artist = Artist.new(name)
-        else
-            self.artist.name = name
+            self.artist = Artist.find_or_create_by_name(name)
         end
     end
 
